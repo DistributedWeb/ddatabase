@@ -1,5 +1,5 @@
 var tape = require('tape')
-var hypercore = require('hypercore')
+var ddatabase = require('ddatabase')
 var ram = require('random-access-memory')
 
 tape('deterministic data and tree', function (t) {
@@ -26,7 +26,7 @@ tape('deterministic data and tree', function (t) {
 
   function run () {
     var st = storage()
-    var feed = hypercore(st)
+    var feed = ddatabase(st)
 
     feed.append(['a', 'b', 'c', 'd', 'e', 'f'], function () {
       t.same(st.data.toBuffer().toString(), 'abcdef')
@@ -58,11 +58,11 @@ tape('deterministic data and tree after replication', function (t) {
   for (var i = 0; i < 5; i++) run()
 
   function run () {
-    var feed = hypercore(ram)
+    var feed = ddatabase(ram)
 
     feed.append(['a', 'b', 'c', 'd', 'e', 'f'], function () {
       var st = storage()
-      var clone = hypercore(st, feed.key)
+      var clone = ddatabase(st, feed.key)
       var stream = clone.replicate()
 
       stream.pipe(feed.replicate()).pipe(stream).on('end', function () {
@@ -96,13 +96,13 @@ tape('deterministic signatures', function (t) {
   for (var i = 0; i < 5; i++) run()
 
   function run () {
-    var feed = hypercore(ram, key, {
+    var feed = ddatabase(ram, key, {
       secretKey: secretKey
     })
 
     feed.append(['a', 'b', 'c'], function () {
       var st = storage()
-      var clone = hypercore(st, feed.key)
+      var clone = ddatabase(st, feed.key)
       var stream = clone.replicate()
 
       stream.pipe(feed.replicate()).pipe(stream).on('end', function () {
@@ -137,7 +137,7 @@ tape('deterministic signatures after replication', function (t) {
 
   function run () {
     var st = storage()
-    var feed = hypercore(st, key, {
+    var feed = ddatabase(st, key, {
       secretKey: secretKey
     })
 

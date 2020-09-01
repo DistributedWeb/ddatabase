@@ -1,11 +1,11 @@
 // NOTES: rerunning this benchmark is *a lot* faster on the 2nd
 // run. Can we gain massive perf by preallocating files?
 
-var hypercore = require('../../')
+var ddatabase = require('../../')
 var path = require('path')
 
 module.exports = function (dir, blockSize, count, finalize) {
-  var feed = hypercore(path.join(__dirname, '../cores', dir), {live: !finalize, overwrite: true})
+  var feed = ddatabase(path.join(__dirname, '../cores', dir), {live: !finalize, overwrite: true})
 
   var then = Date.now()
   var buf = new Buffer(blockSize)

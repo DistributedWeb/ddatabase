@@ -159,7 +159,7 @@ Feed.prototype._open = function (cb) {
     this._synced = null
 
     if (state.key && self.key && !equals(state.key, self.key)) {
-      return cb(new Error('Another hypercore is stored here'))
+      return cb(new Error('Another ddatabase is stored here'))
     }
 
     if (state.key) self.key = state.key
@@ -172,7 +172,7 @@ Feed.prototype._open = function (cb) {
       if (self.length) self.live = !!sig
 
       if (!self.key && !self._createIfMissing) {
-        return cb(new Error('No hypercore is stored here'))
+        return cb(new Error('No ddatabase is stored here'))
       }
 
       if (!self.key && self.live) { // TODO: allow user to pass in keyPair

@@ -1,10 +1,10 @@
 var path = require('path')
 var speedometer = require('speedometer')
-var hypercore = require('../../')
+var ddatabase = require('../../')
 
 module.exports = function (dir, proof) {
   var speed = speedometer()
-  var feed = hypercore(path.join(__dirname, '../cores', dir))
+  var feed = ddatabase(path.join(__dirname, '../cores', dir))
 
   feed.ready(function () {
     for (var i = 0; i < 16; i++) read()
@@ -20,7 +20,7 @@ module.exports = function (dir, proof) {
     }
   })
 
-  process.title = 'hypercore-read-10mb'
+  process.title = 'ddatabase-read-10mb'
   console.log('Reading data at ~10mb/s. Pid is %d', process.pid)
 }
 

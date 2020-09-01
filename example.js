@@ -1,6 +1,6 @@
-var hypercore = require('./')
+var ddatabase = require('./')
 
-var feed = hypercore('./tmp', {valueEncoding: 'json'})
+var feed = ddatabase('./tmp', {valueEncoding: 'json'})
 
 feed.append({
   hello: 'world'
