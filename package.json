@@ -1,7 +1,7 @@
 {
-  "name": "hypercore",
-  "version": "6.25.2",
-  "description": "Hypercore is a secure, distributed append-only log",
+  "name": "ddatabase",
+  "version": "3.0.0",
+  "description": "DDatabase is a secure, distributed append-only log",
   "main": "index.js",
   "dependencies": {
     "array-lru": "^1.1.0",
@@ -15,8 +15,8 @@
     "fast-bitfield": "^1.2.2",
     "flat-tree": "^1.6.0",
     "from2": "^2.3.0",
-    "hypercore-crypto": "^1.0.0",
-    "hypercore-protocol": "^6.4.1",
+    "ddatabase-crypto": "git://github.com/DistributedWeb/ddatabase-crypto.git#8ae46173779823cafedec8159a11f0621d9186fe",
+    "ddatabase-protocol": "git://github.com/DistributedWeb/ddatabase-protocol.git#a20d9ed54a94fa98860995d7526a1b8fd3e10d4e",
     "inherits": "^2.0.3",
     "inspect-custom-symbol": "^1.1.0",
     "last-one-wins": "^1.0.4",
@@ -53,12 +53,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mafintosh/hypercore.git"
+    "url": "https://github.com/distributedweb/ddatabase.git"
   },
   "author": "Mathias Buus (@mafintosh)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mafintosh/hypercore/issues"
+    "url": "https://github.com/distributedweb/ddatabase/issues"
   },
-  "homepage": "https://github.com/mafintosh/hypercore"
+  "homepage": "https://github.com/distributedweb/ddatabase"
 }
