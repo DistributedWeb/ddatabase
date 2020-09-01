@@ -1,7 +1,7 @@
 var create = require('./helpers/create')
-var crypto = require('hypercore-crypto')
+var crypto = require('ddatabase-crypto')
 var tape = require('tape')
-var hypercore = require('../')
+var ddatabase = require('../')
 var ram = require('random-access-memory')
 var bufferAlloc = require('buffer-alloc-unsafe')
 
@@ -130,12 +130,12 @@ tape('pass in secret key', function (t) {
 })
 
 tape('check existing key', function (t) {
-  var feed = hypercore(storage)
+  var feed = ddatabase(storage)
 
   feed.append('hi', function () {
     var key = bufferAlloc(32)
     key.fill(0)
-    var otherFeed = hypercore(storage, key)
+    var otherFeed = ddatabase(storage, key)
     otherFeed.on('error', function () {
       t.pass('should error')
       t.end()
@@ -155,10 +155,10 @@ tape('create from existing keys', function (t) {
   var storage1 = storage.bind(null, '1')
   var storage2 = storage.bind(null, '2')
 
-  var feed = hypercore(storage1)
+  var feed = ddatabase(storage1)
 
   feed.append('hi', function () {
-    var otherFeed = hypercore(storage2, feed.key, { secretKey: feed.secretKey })
+    var otherFeed = ddatabase(storage2, feed.key, { secretKey: feed.secretKey })
     var store = otherFeed._storage
     otherFeed.ready(function () {
       store.open({key: feed.key}, function (err, data) {
@@ -344,7 +344,7 @@ tape('get batch', function (t) {
 })
 
 tape('append returns the seq', function (t) {
-  var feed = hypercore(storage)
+  var feed = ddatabase(storage)
 
   feed.append('a', function (err, seq) {
     t.error(err)
@@ -356,7 +356,7 @@ tape('append returns the seq', function (t) {
         t.error(err)
         t.same(seq, 3)
 
-        var reloaded = hypercore(storage)
+        var reloaded = ddatabase(storage)
         reloaded.append(['e'], function (err, seq) {
           t.error(err)
           t.same(seq, 4)

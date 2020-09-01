@@ -16,7 +16,7 @@ var bitfield = require('./lib/bitfield')
 var sparseBitfield = require('sparse-bitfield')
 var treeIndex = require('./lib/tree-index')
 var storage = require('./lib/storage')
-var crypto = require('hypercore-crypto')
+var crypto = require('ddatabase-crypto')
 var nextTick = require('process-nextick-args')
 var bufferFrom = require('buffer-from')
 var bufferAlloc = require('buffer-alloc-unsafe')
@@ -122,7 +122,7 @@ Feed.prototype[inspect] = function (depth, opts) {
   if (typeof opts.indentationLvl === 'number') {
     while (indent.length < opts.indentationLvl) indent += ' '
   }
-  return 'Hypercore(\n' +
+  return 'DDatabase(\n' +
     indent + '  key: ' + opts.stylize((this.key && pretty(this.key)), 'string') + '\n' +
     indent + '  discoveryKey: ' + opts.stylize((this.discoveryKey && pretty(this.discoveryKey)), 'string') + '\n' +
     indent + '  opened: ' + opts.stylize(this.opened, 'boolean') + '\n' +
@@ -255,7 +255,7 @@ Feed.prototype._open = function (cb) {
     self._seq = self.length
 
     if (state.key && self.key && !equals(state.key, self.key)) {
-      return cb(new Error('Another hypercore is stored here'))
+      return cb(new Error('Another ddatabase is stored here'))
     }
 
     if (state.key) self.key = state.key
@@ -276,7 +276,7 @@ Feed.prototype._open = function (cb) {
       if (self.length) self.live = !!sig
 
       if ((generatedKey || !self.key) && !self._createIfMissing) {
-        return cb(new Error('No hypercore is stored here'))
+        return cb(new Error('No ddatabase is stored here'))
       }
 
       if (!self.key && self.live) {

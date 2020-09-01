@@ -1,16 +1,16 @@
-# hypercore
+# ddatabase
 
-Hypercore is a secure, distributed append-only log.
+DDatabase is a secure, distributed append-only log.
 
-Built for sharing large datasets and streams of real time data as part of the [Dat project](https://datproject.org).
+Built for sharing large datasets and streams of real time data as part of the [DWebX project](https://dwebx.org).
 
 ``` sh
-npm install hypercore
+npm install ddatabase
 ```
 
-[![Build Status](https://travis-ci.org/mafintosh/hypercore.svg?branch=master)](https://travis-ci.org/mafintosh/hypercore)
+[![Build Status](https://travis-ci.org/mafintosh/ddatabase.svg?branch=master)](https://travis-ci.org/mafintosh/ddatabase)
 
-To learn more about how hypercore works on a technical level read the [Dat paper](https://github.com/datproject/docs/blob/master/papers/dat-paper.pdf).
+To learn more about how ddatabase works on a technical level read the [DWebX paper](https://github.com/distributedweb/docs/blob/master/papers/dwebx-paper.pdf).
 
 ## Features
 
@@ -18,13 +18,13 @@ To learn more about how hypercore works on a technical level read the [Dat paper
 * Realtime. Get the latest updates to the log fast and securely.
 * Performant. Uses a simple flat file structure to maximize I/O performance.
 * Secure. Uses signed merkle trees to verify log integrity in real time.
-* Browser support. Simply pick a storage provider (like [random-access-memory](https://github.com/mafintosh/random-access-memory)) that works in the browser
+* Browser support. Simply pick a storage provider (like [random-access-memory](https://github.com/distributedweb/random-access-memory)) that works in the browser
 
 ## Usage
 
 ``` js
-var hypercore = require('hypercore')
-var feed = hypercore('./my-first-dataset', {valueEncoding: 'utf-8'})
+var ddatabase = require('ddatabase')
+var feed = ddatabase('./my-first-dataset', {valueEncoding: 'utf-8'})
 
 feed.append('hello')
 feed.append('world', function (err) {
@@ -36,29 +36,29 @@ feed.append('world', function (err) {
 
 ## Terminology
 
- - **feed**. This is what hypercores are: a data feed. Feeds are permanent data structures that can be shared on the dat network.
+ - **feed**. This is what hypercores are: a data feed. Feeds are permanent data structures that can be shared on the dwebx network.
  - **stream**. Streams are a tool in the code for reading or writing data. Streams are temporary and almost always returned by functions.
  - **pipe**. Streams tend to either be readable (giving data) or writable (receiving data). If you connect a readable to a writable, that's called piping.
- - **replication stream**. A stream returned by the `replicate()` function which can be piped to a peer. It is used to sync the peers' hypercore feeds.
+ - **replication stream**. A stream returned by the `replicate()` function which can be piped to a peer. It is used to sync the peers' ddatabase feeds.
  - **swarming**. Swarming describes adding yourself to the network, finding peers, and sharing data with them. Piping a replication feed describes sharing the data with one peer.
 
 ## API
 
-#### `var feed = hypercore(storage, [key], [options])`
+#### `var feed = ddatabase(storage, [key], [options])`
 
-Create a new hypercore feed.
+Create a new ddatabase feed.
 
 `storage` should be set to a directory where you want to store the data and feed metadata.
 
 ``` js
-var feed = hypercore('./directory') // store data in ./directory
+var feed = ddatabase('./directory') // store data in ./directory
 ```
 
-Alternatively you can pass a function instead that is called with every filename hypercore needs to function and return your own [random-access](https://github.com/juliangruber/abstract-random-access) instance that is used to store the data.
+Alternatively you can pass a function instead that is called with every filename ddatabase needs to function and return your own [random-access](https://github.com/juliangruber/abstract-random-access) instance that is used to store the data.
 
 ``` js
 var ram = require('random-access-memory')
-var feed = hypercore(function (filename) {
+var feed = ddatabase(function (filename) {
   // filename will be one of: data, bitfield, tree, signatures, key, secret_key
   // the data file will contain all your data concatenated.
 
@@ -67,16 +67,16 @@ var feed = hypercore(function (filename) {
 })
 ```
 
-Per default hypercore uses [random-access-file](https://github.com/mafintosh/random-access-file). This is also useful if you want to store specific files in other directories. For example you might want to store the secret key elsewhere.
+Per default ddatabase uses [random-access-file](https://github.com/distributedweb/random-access-file). This is also useful if you want to store specific files in other directories. For example you might want to store the secret key elsewhere.
 
-`key` can be set to a hypercore feed public key. If you do not set this the public key will be loaded from storage. If no key exists a new key pair will be generated.
+`key` can be set to a ddatabase feed public key. If you do not set this the public key will be loaded from storage. If no key exists a new key pair will be generated.
 
 `options` include:
 
 ``` js
 {
-  createIfMissing: true, // create a new hypercore key pair if none was present in storage
-  overwrite: false, // overwrite any old hypercore that might already exist
+  createIfMissing: true, // create a new ddatabase key pair if none was present in storage
+  overwrite: false, // overwrite any old ddatabase that might already exist
   valueEncoding: 'json' | 'utf-8' | 'binary', // defaults to binary
   sparse: false, // do not mark the entire feed to be downloaded
   secretKey: buffer, // optionally pass the corresponding secret key yourself
@@ -86,7 +86,7 @@ Per default hypercore uses [random-access-file](https://github.com/mafintosh/ran
 }
 ```
 
-You can also set valueEncoding to any [abstract-encoding](https://github.com/mafintosh/abstract-encoding) instance.
+You can also set valueEncoding to any [abstract-encoding](https://github.com/distributedweb/abstract-encoding) instance.
 
 #### `feed.append(data, [callback])`
 
@@ -254,7 +254,7 @@ Create a writable stream.
 
 #### `var stream = feed.replicate([options])`
 
-Create a replication stream. You should pipe this to another hypercore instance.
+Create a replication stream. You should pipe this to another ddatabase instance.
 
 ``` js
 // assuming we have two feeds, localFeed + remoteFeed, sharing the same key
@@ -275,7 +275,7 @@ Options include:
 {
   live: false, // keep replicating after all remote data has been downloaded?
   download: true, // download data from peers?
-  encrypt: true // encrypt the data sent using the hypercore key pair
+  encrypt: true // encrypt the data sent using the ddatabase key pair
 }
 ```
 
