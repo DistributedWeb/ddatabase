@@ -1,16 +1,16 @@
-# hypercore
+# ddatabase
 
-Hypercore is a secure, distributed append-only log.
+DDatabase is a secure, distributed append-only log.
 
-Built for sharing large datasets and streams of real time data as part of the [Dat project](https://dat.foundation).
+Built for sharing large datasets and streams of real time data as part of the [DWebX project](https://dwebx.foundation).
 
 ``` sh
-npm install hypercore
+npm install ddatabase
 ```
 
-[![Build Status](https://travis-ci.org/hypercore-protocol/hypercore.svg?branch=master)](https://travis-ci.org/hypercore-protocol/hypercore)
+[![Build Status](https://travis-ci.org/ddatabase-protocol/ddatabase.svg?branch=master)](https://travis-ci.org/ddatabase-protocol/ddatabase)
 
-To learn more about how hypercore works on a technical level read the [Dat paper](https://github.com/datprotocol/whitepaper/blob/master/dat-paper.pdf).
+To learn more about how ddatabase works on a technical level read the [DWebX paper](https://github.com/datprotocol/whitepaper/blob/master/dwebx-paper.pdf).
 
 ## Features
 
@@ -20,13 +20,13 @@ To learn more about how hypercore works on a technical level read the [Dat paper
 * **Secure.** Uses signed merkle trees to verify log integrity in real time.
 * **Browser support.** Simply pick a storage provider (like [random-access-memory](https://github.com/random-access-storage/random-access-memory)) that works in the browser
 
-Note that the latest release is Hypercore 8, which is not compatible with Hypercore 7 on the wire format, but storage compatible.
+Note that the latest release is DDatabase 8, which is not compatible with DDatabase 7 on the wire format, but storage compatible.
 
 ## Usage
 
 ``` js
-var hypercore = require('hypercore')
-var feed = hypercore('./my-first-dataset', {valueEncoding: 'utf-8'})
+var ddatabase = require('ddatabase')
+var feed = ddatabase('./my-first-dataset', {valueEncoding: 'utf-8'})
 
 feed.append('hello')
 feed.append('world', function (err) {
@@ -36,33 +36,33 @@ feed.append('world', function (err) {
 })
 ```
 
-To get find other modules that help with building data structures, P2P networks etc on top of Hypercore see the [companion modules](#Companion-modules) list at the bottom of this page.
+To get find other modules that help with building data structures, P2P networks etc on top of DDatabase see the [companion modules](#Companion-modules) list at the bottom of this page.
 
 ## Terminology
 
- - **feed**. This is what hypercores are: a data feed. Feeds are permanent data structures that can be shared on the dat network.
+ - **feed**. This is what hypercores are: a data feed. Feeds are permanent data structures that can be shared on the dwebx network.
  - **stream**. Streams are a tool in the code for reading or writing data. Streams are temporary and almost always returned by functions.
  - **pipe**. Streams tend to either be readable (giving data) or writable (receiving data). If you connect a readable to a writable, that's called piping.
- - **replication stream**. A stream returned by the `replicate()` function which can be piped to a peer. It is used to sync the peers' hypercore feeds.
+ - **replication stream**. A stream returned by the `replicate()` function which can be piped to a peer. It is used to sync the peers' ddatabase feeds.
  - **swarming**. Swarming describes adding yourself to the network, finding peers, and sharing data with them. Piping a replication feed describes sharing the data with one peer.
 
 ## API
 
-#### `var feed = hypercore(storage, [key], [options])`
+#### `var feed = ddatabase(storage, [key], [options])`
 
-Create a new hypercore feed.
+Create a new ddatabase feed.
 
 `storage` should be set to a directory where you want to store the data and feed metadata.
 
 ``` js
-var feed = hypercore('./directory') // store data in ./directory
+var feed = ddatabase('./directory') // store data in ./directory
 ```
 
-Alternatively you can pass a function instead that is called with every filename hypercore needs to function and return your own [abstract-random-access](https://github.com/random-access-storage/abstract-random-access) instance that is used to store the data.
+Alternatively you can pass a function instead that is called with every filename ddatabase needs to function and return your own [abstract-random-access](https://github.com/random-access-storage/abstract-random-access) instance that is used to store the data.
 
 ``` js
 var ram = require('random-access-memory')
-var feed = hypercore(function (filename) {
+var feed = ddatabase(function (filename) {
   // filename will be one of: data, bitfield, tree, signatures, key, secret_key
   // the data file will contain all your data concatenated.
 
@@ -71,16 +71,16 @@ var feed = hypercore(function (filename) {
 })
 ```
 
-Per default hypercore uses [random-access-file](https://github.com/random-access-storage/random-access-file). This is also useful if you want to store specific files in other directories. For example you might want to store the secret key elsewhere.
+Per default ddatabase uses [random-access-file](https://github.com/random-access-storage/random-access-file). This is also useful if you want to store specific files in other directories. For example you might want to store the secret key elsewhere.
 
-`key` can be set to a hypercore feed public key. If you do not set this the public key will be loaded from storage. If no key exists a new key pair will be generated.
+`key` can be set to a ddatabase feed public key. If you do not set this the public key will be loaded from storage. If no key exists a new key pair will be generated.
 
 `options` include:
 
 ``` js
 {
-  createIfMissing: true, // create a new hypercore key pair if none was present in storage
-  overwrite: false, // overwrite any old hypercore that might already exist
+  createIfMissing: true, // create a new ddatabase key pair if none was present in storage
+  overwrite: false, // overwrite any old ddatabase that might already exist
   valueEncoding: 'json' | 'utf-8' | 'binary', // defaults to binary
   sparse: false, // do not mark the entire feed to be downloaded
   eagerUpdate: true, // always fetch the latest update that is advertised. default false in sparse mode.
@@ -99,7 +99,7 @@ Per default hypercore uses [random-access-file](https://github.com/random-access
 }
 ```
 
-You can also set valueEncoding to any [abstract-encoding](https://github.com/mafintosh/abstract-encoding) instance.
+You can also set valueEncoding to any [abstract-encoding](https://github.com/distributedweb/abstract-encoding) instance.
 
 __Note:__ The `[key]` and `secretKey` are _Node.js_ buffer instances, not browser-based ArrayBuffer instances. When creating hypercores in browser, if you pass an ArrayBuffer instance, you will get an error similar to `key must be at least 16, was given undefined`. Instead, create a Node.js Buffer instance using [Feross‘s](https://github.com/feross) [buffer](https://github.com/feross/buffer) module (`npm install buffer`). e.g.,
 
@@ -110,7 +110,7 @@ const myPublicKey = someUint8Array
 const Buffer = require('buffer').Buffer
 const hypercorePublicKeyBuffer = Buffer.from(myPublicKey.buffer)
 
-const hypercore = hypercore(storage, hypercorePublicKeyBuffer)
+const ddatabase = ddatabase(storage, hypercorePublicKeyBuffer)
 ```
 
 #### `feed.append(data, [callback])`
@@ -318,14 +318,14 @@ Options include:
 
 #### `var stream = feed.replicate(isInitiator, [options])`
 
-Create a replication stream. You should pipe this to another hypercore instance.
+Create a replication stream. You should pipe this to another ddatabase instance.
 
 The `isInitiator` argument is a boolean indicating whether you are the iniatior of the connection (ie the client)
 or if you are the passive part (ie the server).
 
-If you are using a P2P swarm like [Hyperswarm](https://github.com/hyperswarm/hyperswarm) you can know this by checking if the swarm connection is a client socket or server socket. In Hyperswarm you can check that using [client property on the peer details object](https://github.com/hyperswarm/hyperswarm#swarmonconnection-socket-details--)
+If you are using a P2P swarm like [DWebswarm](https://github.com/dwebswarm/dwebswarm) you can know this by checking if the swarm connection is a client socket or server socket. In DWebswarm you can check that using [client property on the peer details object](https://github.com/dwebswarm/dwebswarm#swarmonconnection-socket-details--)
 
-If you want to multiplex the replication over an existing hypercore replication stream you can pass
+If you want to multiplex the replication over an existing ddatabase replication stream you can pass
 another stream instance instead of the `isInitiator` boolean.
 
 ``` js
@@ -349,7 +349,7 @@ Options include:
   ack: false, // set to true to get explicit acknowledgement when a peer has written a block
   download: true, // download data from peers?
   upload: true, // upload data to peers?
-  encrypted: true, // encrypt the data sent using the hypercore key pair
+  encrypted: true, // encrypt the data sent using the ddatabase key pair
   noise: true, // set to false to disable the NOISE handshake completely, and also disable the capability verification. works only together with encrypted = false.
   keyPair: { publicKey, secretKey }, // use this keypair for Noise authentication
   onauthenticate (remotePublicKey, done) // hook that can be used to authenticate the remote peer.
@@ -534,12 +534,12 @@ Emitted when the feed has been fully closed
 
 ## Companion modules
 
-Hypercore works really well with a series of other modules. This in a non-exhaustive list of some of those:
+DDatabase works really well with a series of other modules. This in a non-exhaustive list of some of those:
 
-* [Hyperswarm](https://github.com/hyperswarm/hyperswarm) - P2P swarming module that can you share Hypercores over a network.
-* [Hyperswarm replicator](https://github.com/hyperswarm/replicator) - Wanna share a single Hypercore without any hastle over a network?
-* [Hyperdrive](https://github.com/hypercore-protocol/hyperdrive) - Filesystem abstraction built on Hypercores
-* [Hypertrie](https://github.com/hypercore-protocol/hypertrie) - Scalable key/value store built on Hypercores
+* [DWebswarm](https://github.com/dwebswarm/dwebswarm) - P2P swarming module that can you share Hypercores over a network.
+* [DWebswarm replicator](https://github.com/dwebswarm/replicator) - Wanna share a single DDatabase without any hastle over a network?
+* [DDrive](https://github.com/ddatabase-protocol/ddrive) - Filesystem abstraction built on Hypercores
+* [DWebtrie](https://github.com/ddatabase-protocol/ddrive) - Scalable key/value store built on Hypercores
 
 ## License
 

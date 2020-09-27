@@ -1,7 +1,7 @@
 var path = require('path')
-var hypercore = require('../')
+var ddatabase = require('../')
 
-var feed = hypercore(path.join(__dirname, 'cores/64kb'))
+var feed = ddatabase(path.join(__dirname, 'cores/64kb'))
 
 var then = Date.now()
 var size = 0
