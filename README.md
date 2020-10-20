@@ -8,7 +8,7 @@ Built for sharing large datasets and streams of real time data as part of the [D
 npm install ddatabase
 ```
 
-[![Build Status](https://travis-ci.org/ddatabase-protocol/ddatabase.svg?branch=master)](https://travis-ci.org/ddatabase-protocol/ddatabase)
+[![Build Status](https://travis-ci.org/distributedweb/ddatabase.svg?branch=master)](https://travis-ci.org/distributedweb/ddatabase)
 
 To learn more about how ddatabase works on a technical level read the [DWebX paper](https://github.com/datprotocol/whitepaper/blob/master/dwebx-paper.pdf).
 
