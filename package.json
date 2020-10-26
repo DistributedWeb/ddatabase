@@ -1,7 +1,7 @@
 {
   "name": "ddatabase",
   "version": "5.0.0",
-  "description": "DDatabase is a secure, distributed append-only log",
+  "description": "Distributed append-only data log that can be exchanged between peers on the dWeb.",
   "main": "index.js",
   "dependencies": {
     "abstract-extension": "^3.0.1",
@@ -54,7 +54,7 @@
     "type": "git",
     "url": "https://github.com/distributedweb/ddatabase.git"
   },
-  "author": "Mathias Buus (@mafintosh)",
+  "author": "Peeps Labs <peepslabs@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/distributedweb/ddatabase/issues"
