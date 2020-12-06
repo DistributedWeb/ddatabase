@@ -1,8 +1,8 @@
 # ddatabase
 
-DDatabase is a secure, distributed append-only log.
+dDatabase is a secure, distributed append-only log.
 
-Built for sharing large datasets and streams of real time data as part of the [DWebX project](https://dwebx.foundation).
+Built for sharing large datasets and streams of real time data as part of the [dWeb protocol suite](https://dwebx.foundation).
 
 ``` sh
 npm install ddatabase
@@ -20,7 +20,7 @@ To learn more about how ddatabase works on a technical level read the [DWebX pap
 * **Secure.** Uses signed merkle trees to verify log integrity in real time.
 * **Browser support.** Simply pick a storage provider (like [random-access-memory](https://github.com/random-access-storage/random-access-memory)) that works in the browser
 
-Note that the latest release is DDatabase 8, which is not compatible with DDatabase 7 on the wire format, but storage compatible.
+Note that the latest release is dDatabase 8, which is not compatible with dDatabase 7 on the wire format, but storage compatible.
 
 ## Usage
 
@@ -36,11 +36,11 @@ feed.append('world', function (err) {
 })
 ```
 
-To get find other modules that help with building data structures, P2P networks etc on top of DDatabase see the [companion modules](#Companion-modules) list at the bottom of this page.
+To get find other modules that help with building data structures, P2P networks etc on top of dDatabase see the [companion modules](#Companion-modules) list at the bottom of this page.
 
 ## Terminology
 
- - **feed**. This is what hypercores are: a data feed. Feeds are permanent data structures that can be shared on the dwebx network.
+ - **feed**. This is what ddatabases are: a data feed. Feeds are permanent data structures that can be shared on the dwebx network.
  - **stream**. Streams are a tool in the code for reading or writing data. Streams are temporary and almost always returned by functions.
  - **pipe**. Streams tend to either be readable (giving data) or writable (receiving data). If you connect a readable to a writable, that's called piping.
  - **replication stream**. A stream returned by the `replicate()` function which can be piped to a peer. It is used to sync the peers' ddatabase feeds.
@@ -101,7 +101,7 @@ Per default ddatabase uses [random-access-file](https://github.com/random-access
 
 You can also set valueEncoding to any [abstract-encoding](https://github.com/distributedweb/abstract-encoding) instance.
 
-__Note:__ The `[key]` and `secretKey` are _Node.js_ buffer instances, not browser-based ArrayBuffer instances. When creating hypercores in browser, if you pass an ArrayBuffer instance, you will get an error similar to `key must be at least 16, was given undefined`. Instead, create a Node.js Buffer instance using [Feross‘s](https://github.com/feross) [buffer](https://github.com/feross/buffer) module (`npm install buffer`). e.g.,
+__Note:__ The `[key]` and `secretKey` are _Node.js_ buffer instances, not browser-based ArrayBuffer instances. When creating ddatabases in browser, if you pass an ArrayBuffer instance, you will get an error similar to `key must be at least 16, was given undefined`. Instead, create a Node.js Buffer instance using [Feross‘s](https://github.com/feross) [buffer](https://github.com/feross/buffer) module (`npm install buffer`). e.g.,
 
 ```javascript
 const storage = someRandomAccessStorage
@@ -323,7 +323,7 @@ Create a replication stream. You should pipe this to another ddatabase instance.
 The `isInitiator` argument is a boolean indicating whether you are the iniatior of the connection (ie the client)
 or if you are the passive part (ie the server).
 
-If you are using a P2P swarm like [DWebswarm](https://github.com/dwebswarm/dwebswarm) you can know this by checking if the swarm connection is a client socket or server socket. In DWebswarm you can check that using [client property on the peer details object](https://github.com/dwebswarm/dwebswarm#swarmonconnection-socket-details--)
+If you are using a P2P swarm like [dWebSwarm](https://github.com/dwebswarm/dwebswarm) you can know this by checking if the swarm connection is a client socket or server socket. In dWebSwarm you can check that using [client property on the peer details object](https://github.com/dwebswarm/dwebswarm#swarmonconnection-socket-details--)
 
 If you want to multiplex the replication over an existing ddatabase replication stream you can pass
 another stream instance instead of the `isInitiator` boolean.
@@ -534,12 +534,12 @@ Emitted when the feed has been fully closed
 
 ## Companion modules
 
-DDatabase works really well with a series of other modules. This in a non-exhaustive list of some of those:
+dDatabase works really well with a series of other modules. This in a non-exhaustive list of some of those:
 
-* [DWebswarm](https://github.com/dwebswarm/dwebswarm) - P2P swarming module that can you share Hypercores over a network.
-* [DWebswarm replicator](https://github.com/dwebswarm/replicator) - Wanna share a single DDatabase without any hastle over a network?
-* [DDrive](https://github.com/ddatabase-protocol/ddrive) - Filesystem abstraction built on Hypercores
-* [DWebtrie](https://github.com/ddatabase-protocol/ddrive) - Scalable key/value store built on Hypercores
+* [dWebSwarm](https://github.com/distributedweb/dwebswarm) - P2P swarming module that can you share dDatabases over a network.
+* [dWebSwarm replicator](https://github.com/distributedweb/dwebswarm-replicator) - Wanna share a single dDatabase without any hastle over a network?
+* [dDrive](https://github.com/distributedweb/ddrive) - Filesystem abstraction built on dDatabases
+* [dWebTrie](https://github.com/distributedweb/dwebtrie) - Scalable key/value store built on dDatabases
 
 ## License
 
